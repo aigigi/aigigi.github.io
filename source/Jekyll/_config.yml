@@ -1,0 +1,28 @@
+title:              LOVELY DAYS
+email:              disinil@outlook.com
+description:        Sheng Liu's Site
+author:             Sheng Liu
+baseurl:            "/blog"
+url:                "https://aigigi.github.io"
+destination:        ../../blog
+#theme:              jekyll-theme-hacker
+
+# Social Profiles
+twitter_username:
+github_username:    aigigi
+facebook_username:
+instagram_username:
+linkedin_username:  
+
+# Add your google-analytics ID here to activate google analytics
+google_analytics:   UA-XXXXXXXXX-X # out your google-analytics code
+
+# Build settings
+markdown:           kramdown
+highlighter:        rouge
+paginate:           5
+paginate_path:      "/posts/page:num/"
+plugins:
+  - jekyll-feed
+  - jekyll-paginate
+  - jekyll-sitemap ## Uncomment this line to silently generate a sitemaps.org compliant sitemap for your Jekyll site
