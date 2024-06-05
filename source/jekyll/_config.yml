@@ -4,7 +4,7 @@ description:        Sheng Liu's Site
 author:             Sheng Liu
 baseurl:            "/blog"
 url:                "https://aigigi.github.io"
-destination:        blog/
+destination:        ../../blog/
 #theme:              jekyll-theme-hacker
 
 # Social Profiles
