@@ -12,10 +12,10 @@ Here are some early demos of my projects at work and spare time.
 
 ## Local Shadertoy Renderer using WebGL 2.0 : 
 
-<div align="center"><a href="https://aigigi.github.io/LOCALSDTOY/" title="WetStone" rel="nofollow" one-link-mark="yes" target="_blank"><img src="./LOCALSDTOY/images/screenshots/WetStone.png" width="1280"/></a></div>
+<div align="center"><a href="https://aigigi.github.io/LOCALSDTOY/" title="Local Shadertoy Renderer using WebGL 2.0" rel="nofollow" one-link-mark="yes" target="_blank"><img src="./LOCALSDTOY/images/screenshots/WetStone.png" width="1280"/></a></div>
 <p><br></p>
 
-<div align="center"><a href="https://aigigi.github.io/LOCALSDTOY/" title="WetStone" rel="nofollow" one-link-mark="yes" target="_blank">https://aigigi.github.io/LOCALSDTOY/</div>
+<div align="center"><a href="https://aigigi.github.io/LOCALSDTOY/" title="Local Shadertoy Renderer using WebGL 2.0" rel="nofollow" one-link-mark="yes" target="_blank">https://aigigi.github.io/LOCALSDTOY/</div>
 
 <p><br></p>
 ## SkeletonShow For Moving Human Body
