@@ -2,4 +2,12 @@
 [aigigi's github page](https://aigigi.github.io/ "aigigi.github.io")
 
 
-Hello guys!
+Hello guys! Welcome to my site!
+
+
+
+
+# [==>My Blog](https://aigigi.github.io/blog/ "My Blog")
+
+
+
