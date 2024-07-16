@@ -13,7 +13,7 @@
 </url>
 <url>
 <loc>https://aigigi.github.io/blog/live/webgl/</loc>
-<lastmod>2024-07-11T17:02:53+08:00</lastmod>
+<lastmod>2024-07-12T13:28:28+08:00</lastmod>
 </url>
 <url>
 <loc>https://aigigi.github.io/blog/live/webgl/pathtracer/renderVideo.html</loc>
@@ -26,6 +26,10 @@
 <url>
 <loc>https://aigigi.github.io/blog/live/webgl/pathtracer/spotLights.html</loc>
 <lastmod>2024-07-11T17:03:13+08:00</lastmod>
+</url>
+<url>
+<loc>https://aigigi.github.io/blog/live/webgpu/courses/skybox.html</loc>
+<lastmod>2024-07-16T17:55:58+08:00</lastmod>
 </url>
 <url>
 <loc>https://aigigi.github.io/blog/tools/viewer/online-ktx2-viewer/src/site/pages/</loc>
