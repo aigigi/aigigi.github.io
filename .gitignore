@@ -6,5 +6,5 @@ Gemfile.lock
 *.gem
 tmp
 demos
-live
+live/
 index.md
