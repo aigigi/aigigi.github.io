@@ -5,7 +5,7 @@ node_modules
 Gemfile.lock
 *.gem
 tmp
-demos
+demos/
 live/
 blog/folio/
 index.md
