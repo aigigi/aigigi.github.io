@@ -5,6 +5,9 @@ node_modules
 Gemfile.lock
 *.gem
 tmp
+.bundle/
+.idea/
+.vscode/
 demos/
 live/
 blog/folio/
