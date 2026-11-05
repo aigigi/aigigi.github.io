@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>RePlay Rehab</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; background: #14171c; color: #e8eaed;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    }
+    #app { height: 100dvh; display: flex; flex-direction: column; }
+    button { font-family: inherit; cursor: pointer; }
+
+    /* ---------- 菜单 ---------- */
+    .menu { overflow-y: auto; padding: 20px; max-width: 900px; margin: 0 auto; width: 100%; }
+    .menu-head h1 { font-size: 22px; margin: 0 0 4px; }
+    .menu-head p { color: #9aa0a6; font-size: 13px; margin: 0 0 18px; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; }
+    .card {
+      text-align: left; background: #1d2127; color: #e8eaed; border: 1px solid #2b3038;
+      border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 8px;
+    }
+    .card:hover { border-color: #8ab4f8; }
+    .card-title { font-size: 17px; font-weight: 600; }
+    .card-desc { font-size: 13px; color: #bdc1c6; line-height: 1.5; }
+    .card-hint { font-size: 12px; color: #6b7280; }
+
+    /* ---------- 对局 ---------- */
+    .game-screen { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+    .hud {
+      display: flex; align-items: center; gap: 14px; padding: 8px 12px;
+      background: #1d2127; border-bottom: 1px solid #2b3038; flex-wrap: wrap;
+    }
+    .hud-title { font-weight: 600; }
+    .hud-item { font-size: 13px; color: #9aa0a6; }
+    .hud-item b { color: #8ab4f8; font-variant-numeric: tabular-nums; }
+    .stim-badge { transition: background 120ms; border-radius: 6px; padding: 2px 8px; }
+    .stim-badge.flash { background: #f4b400; color: #14171c; }
+    .stim-badge.flash b { color: #14171c; }
+    .hud-bars { display: flex; flex-direction: column; gap: 3px; width: 110px; margin-left: auto; }
+    .bar-track { position: relative; height: 10px; background: #111418; border-radius: 5px; overflow: hidden; }
+    .bar-track::after { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: #3c4043; }
+    .bar {
+      position: absolute; left: 50%; top: 1px; bottom: 1px; width: calc(50% - 1px);
+      background: #2e9e5b; border-radius: 3px; transform: scaleX(0); transform-origin: left;
+    }
+    .btn-danger { background: #d9534f; color: #fff; border: 0; border-radius: 6px; padding: 6px 14px; font-size: 13px; }
+
+    .game-main { flex: 1; min-height: 0; position: relative; overflow: hidden; touch-action: none; }
+
+    /* ---------- RepetitionsMode ---------- */
+    .rep-mode {
+      height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px;
+    }
+    .rep-ring {
+      width: min(60vw, 320px); height: min(60vw, 320px); border-radius: 50%;
+      border: 10px solid #2b3038; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; transition: border-color 150ms;
+    }
+    .rep-ring.pulse { border-color: #2e9e5b; }
+    .rep-count { font-size: 72px; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .rep-target { color: #9aa0a6; font-size: 18px; }
+    .rep-progress { width: min(80vw, 420px); height: 14px; background: #111418; border-radius: 7px; overflow: hidden; }
+    .rep-progress-fill { height: 100%; width: 0; background: #2e9e5b; transition: width 120ms; }
+    .rep-stats { display: flex; gap: 28px; color: #9aa0a6; font-size: 14px; }
+    .rep-stats b { color: #8ab4f8; }
+
+    /* ---------- 字母条 ---------- */
+    .letterpad { background: #1d2127; padding: 6px; display: flex; flex-direction: column; gap: 4px; }
+    .lp-row { display: flex; justify-content: center; gap: 4px; }
+    .letterpad button {
+      flex: 0 1 34px; height: 40px; background: #2b3038; color: #e8eaed;
+      border: 1px solid #3c4043; border-radius: 6px; font-size: 16px;
+    }
+    .letterpad button:active { background: #8ab4f8; color: #14171c; }
+
+    /* ---------- 控制条 ---------- */
+    .control-strip {
+      height: 110px; margin: 8px; border-radius: 14px; touch-action: none;
+      background: linear-gradient(180deg, #3a2b2b 0%, #1d2127 45%, #1d3325 100%);
+      border: 1px solid #2b3038; position: relative; user-select: none;
+    }
+    .control-strip::after {
+      content: ""; position: absolute; left: 8px; right: 8px; top: 50%; height: 1px; background: #4a5258;
+    }
+    .strip-label {
+      position: absolute; top: 6px; left: 10px; font-size: 11px; color: #9aa0a6;
+      display: flex; flex-direction: column; pointer-events: none;
+    }
+    .strip-label small { color: #6b7280; }
+
+    /* ---------- 结果 ---------- */
+    .results { max-width: 520px; margin: 0 auto; padding: 28px 20px; overflow-y: auto; }
+    .results h1 { font-size: 20px; }
+    .metric-table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+    .metric-table td { padding: 8px 12px; border-bottom: 1px solid #2b3038; font-size: 14px; }
+    .metric-table td:last-child { text-align: right; color: #8ab4f8; font-variant-numeric: tabular-nums; }
+    .result-actions { display: flex; flex-direction: column; gap: 8px; }
+    .result-actions button {
+      background: #8ab4f8; color: #14171c; border: 0; border-radius: 8px; padding: 12px; font-size: 15px; font-weight: 600;
+    }
+    .result-actions .btn-secondary { background: #2b3038; color: #e8eaed; }
+
+    /* ---------- 跳一跳 输入浮层 ---------- */
+    .jj-ui { position: absolute; right: 12px; bottom: 12px; display: flex; align-items: center; gap: 8px; z-index: 5; }
+    .jj-b {
+      font-size: 13px; color: #e8eaed; background: rgba(20,23,28,.8); border: 1px solid #2b3038;
+      border-radius: 8px; padding: 8px 10px; min-width: 74px; text-align: center; font-variant-numeric: tabular-nums;
+    }
+    .jj-btn {
+      width: 46px; height: 46px; border-radius: 50%; border: 1px solid #3c4043;
+      background: #2b3038; color: #e8eaed; font-size: 20px; font-weight: 700; touch-action: none;
+    }
+    .jj-btn:active { background: #8ab4f8; color: #14171c; }
+    .jj-hint {
+      position: absolute; left: 12px; bottom: 12px; font-size: 12px; color: rgba(232,234,237,.6);
+      background: rgba(20,23,28,.6); padding: 5px 10px; border-radius: 8px; pointer-events: none;
+    }
+    .jj-hud {
+      position: absolute; left: 12px; top: 10px; font-size: 13px; color: #3c4043;
+      background: rgba(255,255,255,.55); padding: 5px 10px; border-radius: 8px;
+      pointer-events: none; font-variant-numeric: tabular-nums; z-index: 5;
+    }
+
+    /* ---------- 车流躲避 3D ---------- */
+    .race-ui { position: absolute; inset: 0; pointer-events: none; z-index: 5; }
+    .race-left {
+      position: absolute; left: 14px; bottom: 14px; display: flex; gap: 12px; pointer-events: auto;
+    }
+    .race-right {
+      position: absolute; right: 14px; bottom: 14px; display: flex; align-items: center; gap: 8px; pointer-events: auto;
+    }
+    .race-btn {
+      min-width: 56px; height: 56px; border-radius: 14px; border: 1px solid rgba(60,64,67,.35);
+      background: rgba(255,255,255,.75); color: #202124; font-size: 20px; font-weight: 700; touch-action: none;
+    }
+    .race-btn:active { background: #8ab4f8; color: #14171c; }
+    .race-btn.sm { min-width: 44px; height: 40px; font-size: 13px; }
+    .race-btn.boost { background: #e8590c; color: #fff; font-size: 15px; padding: 0 14px; }
+    .race-btn.boost:active { background: #ff7a33; color: #fff; }
+    .race-c {
+      font-size: 13px; color: #202124; background: rgba(255,255,255,.75);
+      border-radius: 8px; padding: 8px 10px; min-width: 64px; text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+    .race-hud {
+      position: absolute; left: 12px; top: 10px; font-size: 14px; color: #202124;
+      background: rgba(255,255,255,.6); padding: 6px 12px; border-radius: 8px;
+      pointer-events: none; font-variant-numeric: tabular-nums; z-index: 5; font-weight: 600;
+    }
+    .race-toast {
+      position: absolute; left: 50%; top: 22%; transform: translate(-50%, 0) scale(.9);
+      font-size: 22px; font-weight: 700; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,.5);
+      opacity: 0; transition: opacity 150ms, transform 150ms; pointer-events: none; z-index: 6;
+    }
+    .race-toast.on { opacity: 1; transform: translate(-50%, 0) scale(1); }
+    .race-flash {
+      position: absolute; inset: 0; background: rgba(217, 83, 79, .35); opacity: 0;
+      transition: opacity 120ms; pointer-events: none; z-index: 6;
+    }
+    .race-flash.on { opacity: 1; }
+    .race-map {
+      position: absolute; left: 50%; top: 10px; transform: translateX(-50%);
+      width: min(60vw, 340px); height: 8px; border-radius: 4px;
+      background: rgba(20,23,28,.45); pointer-events: none; z-index: 5;
+    }
+    .race-map::after { /* 玩家固定在中央 */
+      content: ""; position: absolute; left: 50%; top: -3px; width: 6px; height: 14px;
+      background: #e8590c; border-radius: 3px; transform: translateX(-50%);
+    }
+    .race-map-dot {
+      position: absolute; top: 1px; width: 6px; height: 6px; border-radius: 50%;
+      background: #dfe4ea; transform: translateX(-50%);
+    }
+  </style>
+  <script type="module" crossorigin src="./assets/index-H6umT4St.js"></script>
+</head>
+<body>
+  <div id="app"></div>
+</body>
+</html>
