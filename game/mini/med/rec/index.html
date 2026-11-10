@@ -153,10 +153,23 @@
       background: rgba(255,255,255,.6); padding: 6px 12px; border-radius: 8px;
       pointer-events: none; font-variant-numeric: tabular-nums; z-index: 5; font-weight: 600;
     }
+    /* 氮气燃料条：画面中央上部（下移避开左侧排位 HUD 与中部起跑信号灯），吃币增长/氮气全程缓慢消耗，青色 */
+    .race-nitro-bar {
+      position: absolute; left: 50%; top: 112px; transform: translateX(-50%);
+      width: min(280px, 46vw); height: 24px; border-radius: 12px; overflow: hidden;
+      background: rgba(255,255,255,.5); border: 1px solid rgba(60,64,67,.3);
+      pointer-events: none; z-index: 5;
+    }
+    .race-nitro-bar i {
+      display: block; height: 100%; width: 0%; border-radius: 12px;
+      background: linear-gradient(90deg, #00acc1, #16f2e0);
+      box-shadow: 0 0 8px rgba(0,229,255,.6);
+      transition: width 140ms linear;
+    }
     .race-toast {
       position: absolute; left: 50%; top: 22%; transform: translate(-50%, 0) scale(.9);
       font-size: 22px; font-weight: 700; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,.5);
-      opacity: 0; transition: opacity 150ms, transform 150ms; pointer-events: none; z-index: 6;
+      opacity: 0; transition: opacity 150ms, transform 150ms; pointer-events: none; z-index: 9;
     }
     .race-toast.on { opacity: 1; transform: translate(-50%, 0) scale(1); }
     .race-flash {
@@ -164,6 +177,36 @@
       transition: opacity 120ms; pointer-events: none; z-index: 6;
     }
     .race-flash.on { opacity: 1; }
+    /* 起跑灯：三盏逐亮，全亮变绿出发 */
+    .race-lights {
+      position: absolute; left: 50%; top: 46px; transform: translateX(-50%);
+      display: flex; gap: 14px; opacity: 0; transition: opacity 300ms;
+      pointer-events: none; z-index: 7;
+    }
+    .race-lights.on { opacity: 1; }
+    .race-light {
+      width: 26px; height: 26px; border-radius: 50%; background: #3a3f46;
+      border: 2px solid #20242a; transition: background 120ms, box-shadow 120ms;
+    }
+    .race-light.red { background: #d9504f; box-shadow: 0 0 12px rgba(217,80,79,.8); }
+    .race-light.green { background: #3fae5a; box-shadow: 0 0 14px rgba(63,174,90,.9); }
+    /* 换赛道过场：黑幕渐隐/渐显，中央大字 */
+    .race-veil {
+      position: absolute; inset: 0; background: #000; opacity: 0;
+      transition: opacity 1s; pointer-events: none; z-index: 8;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .race-veil.on { opacity: 1; }
+    .race-veil-title {
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) scale(.92);
+      font-size: 64px; font-weight: 800; color: #fff; letter-spacing: 10px;
+      /* 描边+阴影：揭开后黑幕已透明，大字浮在明亮赛道上仍需可读 */
+      text-shadow: 0 2px 6px rgba(0,0,0,.85), 0 0 22px rgba(0,0,0,.6);
+      -webkit-text-stroke: 1.5px rgba(0,0,0,.5);
+      opacity: 0; transition: opacity 450ms, transform 450ms;
+      pointer-events: none; z-index: 10;
+    }
+    .race-veil-title.on { opacity: 1; transform: translate(-50%, -50%) scale(1); }
     .race-map {
       position: absolute; left: 50%; top: 10px; transform: translateX(-50%);
       width: min(60vw, 340px); height: 8px; border-radius: 4px;
@@ -178,7 +221,7 @@
       background: #dfe4ea; transform: translateX(-50%);
     }
   </style>
-  <script type="module" crossorigin src="./assets/index-BYgzzAZa.js"></script>
+  <script type="module" crossorigin src="./assets/index-D4MfMo8A.js"></script>
 </head>
 <body>
   <div id="app"></div>
